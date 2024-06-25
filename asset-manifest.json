@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/itsaikonda456/newsapp.git/static/css/main.dc4d6ff2.css",
+    "main.js": "/itsaikonda456/newsapp.git/static/js/main.c05404c4.js",
+    "static/js/453.b2157c12.chunk.js": "/itsaikonda456/newsapp.git/static/js/453.b2157c12.chunk.js",
+    "index.html": "/itsaikonda456/newsapp.git/index.html",
+    "main.dc4d6ff2.css.map": "/itsaikonda456/newsapp.git/static/css/main.dc4d6ff2.css.map",
+    "main.c05404c4.js.map": "/itsaikonda456/newsapp.git/static/js/main.c05404c4.js.map",
+    "453.b2157c12.chunk.js.map": "/itsaikonda456/newsapp.git/static/js/453.b2157c12.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.dc4d6ff2.css",
+    "static/js/main.c05404c4.js"
+  ]
+}
