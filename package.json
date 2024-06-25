@@ -1,6 +1,6 @@
 {
   "name": "newsapp",
-"homepage": "http://{itsaikonda456}.github.io/{newsapp}",
+"homepage": "https://github.com/itsaikonda456/newsapp.git",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
