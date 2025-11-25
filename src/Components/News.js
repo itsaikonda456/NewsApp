@@ -17,17 +17,19 @@ const News = ({
   const [page, setPage] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
 
-  // Load API key from .env
-  const apiKey = process.env.REACT_APP_NEWS_API_KEY;
+  // 🔑 GNews API key from .env
+  const apiKey = process.env.REACT_APP_GNEWS_API_KEY;
 
-  // 🔥 WORKING endpoint for free plan
+  // 🟢 Build GNews API URL
+  // Docs: https://gnews.io/docs/v4#search
   const buildUrl = (pageNumber) => {
-    return `https://newsapi.org/v2/everything?q=${category}&sortBy=publishedAt&apiKey=${apiKey}&page=${pageNumber}&pageSize=${pageSizes}`;
+    const encodedCategory = encodeURIComponent(category);
+    return `https://gnews.io/api/v4/search?q=${encodedCategory}&lang=en&country=${country}&max=${pageSizes}&page=${pageNumber}&token=${apiKey}`;
   };
 
   const updateNews = async () => {
     if (!apiKey) {
-      console.error("❌ API Key missing in .env");
+      console.error("❌ GNews API Key missing in .env (REACT_APP_GNEWS_API_KEY)");
       setLoading(false);
       return;
     }
@@ -42,15 +44,16 @@ const News = ({
       setprogress(50);
       const data = await response.json();
 
-      if (data.status !== "ok") {
-        console.error("API Error:", data);
+      // GNews error format check
+      if (data.errors) {
+        console.error("API Error:", data.errors);
         setLoading(false);
         return;
       }
 
       setprogress(75);
-      setArticles(data.articles);
-      setTotalResults(data.totalResults);
+      setArticles(data.articles || []);
+      setTotalResults(data.totalArticles || (data.articles ? data.articles.length : 0));
     } catch (error) {
       console.error("❌ Fetch error:", error);
     }
@@ -59,7 +62,7 @@ const News = ({
     setprogress(100);
   };
 
-  // 🔥 Runs when category changes
+  // Runs when category changes
   useEffect(() => {
     setPage(1);
     updateNews();
@@ -77,12 +80,12 @@ const News = ({
       const response = await fetch(url);
       const data = await response.json();
 
-      if (data.status !== "ok") {
-        console.error("Pagination Error:", data);
+      if (data.errors) {
+        console.error("Pagination Error:", data.errors);
         return;
       }
 
-      setArticles((prev) => [...prev, ...data.articles]);
+      setArticles((prev) => [...prev, ...(data.articles || [])]);
     } catch (error) {
       console.error("❌ Pagination fetch error:", error);
     }
@@ -98,7 +101,9 @@ const News = ({
         <div className="container text-center mt-4">
           <div className="alert alert-danger">
             <h4>API Key Missing!</h4>
-            <p>Add <b>REACT_APP_NEWS_API_KEY</b> in your .env file.</p>
+            <p>
+              Add <b>REACT_APP_GNEWS_API_KEY</b> in your <code>.env</code> file.
+            </p>
           </div>
         </div>
       ) : loading && articles.length === 0 ? (
@@ -125,9 +130,9 @@ const News = ({
                   <NewsItem
                     title={article.title?.slice(0, 45) || ""}
                     description={article.description?.slice(0, 88) || ""}
-                    imageUrl={article.urlToImage}
+                    imageUrl={article.image}            // GNews uses "image"
                     newsUrl={article.url}
-                    author={article.author}
+                    author={article.source?.name || "Unknown"}
                     date={article.publishedAt}
                     source={article.source?.name || "Unknown"}
                   />
