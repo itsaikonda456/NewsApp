@@ -4,6 +4,9 @@ import React, { useState } from 'react';
 import News from './Components/News';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LoadingBar from 'react-top-loading-bar';
+import About from './Components/About';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const App =(props)=> {
  const [progress,setprogress] = useState(0)
@@ -13,13 +16,14 @@ const App =(props)=> {
     return (
       <div>
         <Router> 
-          <Navbar />
-          <LoadingBar
+          <Navbar/>
+          <LoadingBar className=''
         color='#f11946'
         progress={progress}
          />
           <Routes>
             <Route path="/" element={<News articles={props.articles} setprogress={setprogress} key="home" pageSizes={6} country='in' category='General'  />} />
+            <Route path='/About' element={<About />}  />      
             <Route path="/business" element={<News setprogress={setprogress} key="business" pageSizes={6} country='in' category='Business'  />} />
             <Route path="/health" element={<News setprogress={setprogress} key="health" pageSizes={6} country='in' category='Health'  />} />
             <Route path="/entertainment" element={<News setprogress={setprogress} key="entertainment" pageSizes={6} country='in' category='Entertainment'  />} />
